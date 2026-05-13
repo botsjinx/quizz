@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PD1 Exam Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PD Exam Simulator · Shuffle Questions & Options</title>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #0b1120 0%, #111827 100%);
             min-height: 100vh;
             display: flex;
             align-items: flex-start;
@@ -17,207 +17,435 @@
             padding: 32px 16px;
         }
 
-        .screen { width: 100%; max-width: 680px; animation: fadeUp 0.35s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-
-        /* ── SCREEN 1 ── */
-        .sel-header { text-align: center; margin-bottom: 36px; }
-        .sel-header h1 {
-            font-size: 1.75rem; font-weight: 700;
-            background: linear-gradient(135deg, #c084fc, #60a5fa);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 6px;
+        /* screens & containers */
+        .screen {
+            width: 100%;
+            max-width: 720px;
+            animation: fadeSlide 0.3s ease;
         }
-        .sel-header p { color: #64748b; font-size: 0.88rem; }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        .set-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+        /* cards & elements */
+        .sel-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .sel-header h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c084fc, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .sel-header p {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .set-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
 
         .set-card {
-            background: #1e293b; border: 2px solid #334155; border-radius: 20px;
-            padding: 28px 20px; cursor: pointer; transition: all 0.2s;
-            text-align: center; user-select: none; position: relative;
+            background: #1f2937;
+            border: 2px solid #374151;
+            border-radius: 24px;
+            padding: 24px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(2px);
         }
-        .set-card:hover { border-color: #475569; background: #243047; }
-        .set-card.selected { border-color: #6d28d9; background: #1e1b4b; }
+        .set-card:hover {
+            border-color: #6b7280;
+            background: #2d3a4c;
+            transform: translateY(-2px);
+        }
+        .set-card.selected {
+            border-color: #8b5cf6;
+            background: #1e1b4b;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25);
+        }
         .set-card.selected::after {
-            content: "✓"; position: absolute; top: 12px; right: 14px;
-            background: #7c3aed; color: white; font-size: 0.72rem; font-weight: 700;
-            width: 22px; height: 22px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            content: "✓";
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: #8b5cf6;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
         }
-        .set-icon { font-size: 2.2rem; margin-bottom: 14px; }
-        .set-name { color: #e2e8f0; font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; }
-        .set-count { color: #64748b; font-size: 0.8rem; }
-        .set-card.selected .set-name { color: #a78bfa; }
-        .set-card.selected .set-count { color: #7c6fcd; }
+        .set-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .set-name { font-weight: 700; color: #e5e7eb; margin-bottom: 6px; font-size: 1rem; }
+        .set-count { font-size: 0.75rem; color: #6b7280; }
+        .set-card.selected .set-name { color: #c4b5fd; }
 
-        .set-card.error-card { cursor: default; opacity: 0.5; }
+        .error-card {
+            opacity: 0.6;
+            cursor: default;
+            filter: grayscale(0.1);
+        }
 
         .start-btn {
-            width: 100%; padding: 16px;
-            background: linear-gradient(95deg, #7c3aed, #2563eb);
-            border: none; border-radius: 16px;
-            color: white; font-size: 1rem; font-weight: 700;
-            cursor: pointer; transition: 0.2s;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(98deg, #7c3aed, #2563eb);
+            border: none;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        .start-btn:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
-        .start-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-        .sel-note { text-align: center; color: #475569; font-size: 0.78rem; margin-top: 14px; }
+        .start-btn:hover:not(:disabled) {
+            filter: brightness(1.07);
+            transform: scale(0.99);
+        }
+        .start-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .sel-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #4b5563;
+            margin-top: 14px;
+        }
 
-        /* ── SCREEN 2 ── */
+        /* quiz navbar */
         .quiz-topbar {
-            display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         .back-btn {
-            background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-            padding: 8px 14px; color: #94a3b8; font-size: 0.85rem;
-            cursor: pointer; transition: 0.18s; white-space: nowrap; flex-shrink: 0;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: 0.15s;
         }
-        .back-btn:hover { border-color: #475569; color: #e2e8f0; }
-        .quiz-title { color: #64748b; font-size: 0.82rem; }
-        .quiz-title strong { color: #cbd5e1; }
+        .back-btn:hover {
+            background: #2d3a4f;
+            color: white;
+        }
+        .quiz-title {
+            font-size: 0.85rem;
+            background: #111827;
+            padding: 6px 14px;
+            border-radius: 40px;
+            color: #9ca3af;
+        }
 
         .stats-strip {
-            background: #0f172a; border-radius: 14px; padding: 10px 18px;
-            display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.78rem;
-            color: #475569; margin-bottom: 16px;
+            background: #111827;
+            border-radius: 32px;
+            padding: 12px 20px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 16px;
         }
-        .stats-strip strong { color: #cbd5e1; }
-
+        .stats-strip strong { color: #e2e8f0; font-weight: 700; }
         .progress-bar {
-            background: #1e293b; border-radius: 20px; height: 22px;
-            overflow: hidden; margin-bottom: 8px;
+            background: #1e293b;
+            border-radius: 30px;
+            height: 26px;
+            overflow: hidden;
+            margin-bottom: 8px;
         }
         .progress-fill {
-            background: linear-gradient(90deg, #7c3aed, #2563eb);
-            height: 100%; display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: 700; font-size: 0.72rem;
-            transition: width 0.4s ease; min-width: 2rem;
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            width: 0%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: white;
+            transition: width 0.35s ease;
         }
         .progress-meta {
-            display: flex; justify-content: space-between;
-            font-size: 0.78rem; color: #475569; margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 20px;
         }
 
         .question-card {
-            background: #1e293b; border-radius: 24px;
-            padding: 26px; border: 1px solid #334155; margin-bottom: 16px;
+            background: #1f2937;
+            border-radius: 28px;
+            border: 1px solid #334155;
+            padding: 28px 24px;
+            margin-bottom: 24px;
         }
-        .q-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .q-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
         .q-tag {
-            background: #0f172a; color: #64748b; font-size: 0.72rem;
-            border: 1px solid #334155; border-radius: 20px; padding: 3px 10px;
+            background: #0f172a;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            border: 1px solid #334155;
         }
-        .q-tag.multi { color: #fbbf24; border-color: #78350f; background: #1c1008; }
+        .q-tag.multi {
+            background: #2d1b0c;
+            border-color: #f59e0b;
+            color: #fde68a;
+        }
 
         .question-text {
-            font-size: 1.08rem; font-weight: 500; color: #f1f5f9;
-            line-height: 1.6; margin-bottom: 22px; white-space: pre-wrap;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #f3f4f6;
+            line-height: 1.5;
+            margin-bottom: 24px;
         }
 
-        .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
         .opt {
-            background: #0f172a; border: 1.5px solid #334155; border-radius: 14px;
-            padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;
-            cursor: pointer; transition: all 0.16s; line-height: 1.5;
+            background: #111827;
+            border: 1.5px solid #2d3a4e;
+            border-radius: 18px;
+            padding: 12px 18px;
+            display: flex;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.12s linear;
+            align-items: flex-start;
         }
-        .opt:hover:not(.locked) { background: #1a2744; border-color: #6d28d9; }
-        .opt.selected { background: #0f1e3d; border-color: #3b82f6; }
+        .opt:hover:not(.locked) {
+            background: #1e2a3e;
+            border-color: #7c3aed;
+        }
+        .opt.selected {
+            background: #1e1b4b;
+            border-color: #8b5cf6;
+        }
         .opt.locked { cursor: default; }
-        .opt.show-correct { background: #052e16; border-color: #16a34a; }
-        .opt.show-wrong   { background: #3b0a0a; border-color: #dc2626; }
-
-        .opt-letter { color: #a78bfa; font-weight: 700; font-size: 0.95rem; min-width: 24px; flex-shrink: 0; padding-top: 1px; }
-        .opt-text   { color: #cbd5e1; font-size: 0.88rem; white-space: pre-wrap; }
+        .opt.show-correct {
+            background: #064e3b;
+            border-color: #10b981;
+        }
+        .opt.show-wrong {
+            background: #7f1a1a;
+            border-color: #ef4444;
+        }
+        .opt-letter {
+            font-weight: 800;
+            color: #a78bfa;
+            min-width: 28px;
+            font-size: 0.9rem;
+        }
+        .opt-text {
+            color: #e2e8f0;
+            font-size: 0.88rem;
+            line-height: 1.45;
+        }
 
         .feedback {
-            border-radius: 12px; padding: 13px 16px; font-size: 0.85rem;
-            line-height: 1.55; margin-top: 2px; display: none;
+            border-radius: 18px;
+            padding: 14px 18px;
+            margin-top: 4px;
+            font-size: 0.85rem;
+            display: none;
+            line-height: 1.5;
         }
-        .feedback.correct { background: #052e16; border-left: 3px solid #16a34a; color: #bbf7d0; border-radius: 0 12px 12px 0; }
-        .feedback.wrong   { background: #3b0a0a; border-left: 3px solid #dc2626; color: #fecaca; border-radius: 0 12px 12px 0; }
-        .hint { text-align: center; font-size: 0.76rem; color: #334155; margin-top: 10px; }
+        .feedback.correct {
+            background: #022c22;
+            border-left: 5px solid #10b981;
+            display: block;
+            color: #bef264;
+        }
+        .feedback.wrong {
+            background: #3b0e0e;
+            border-left: 5px solid #f97316;
+            display: block;
+            color: #fed7aa;
+        }
 
-        .nav-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .hint {
+            font-size: 0.7rem;
+            color: #4b5563;
+            text-align: center;
+            margin-top: 6px;
+        }
+        .nav-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
         .btn {
-            padding: 11px 22px; border-radius: 40px; border: none;
-            font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.16s;
+            padding: 10px 22px;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.12s;
         }
-        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .btn:not(:disabled):hover { filter: brightness(1.12); }
-        .btn-gray   { background: #334155; color: #e2e8f0; }
-        .btn-blue   { background: #1d4ed8; color: #fff; }
-        .btn-green  { background: #065f46; color: #fff; }
-        .btn-amber  { background: #92400e; color: #fff; }
-        .btn-purple { background: #5b21b6; color: #fff; }
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .btn-gray { background: #374151; color: #f1f5f9; }
+        .btn-blue { background: #2563eb; color: white; }
+        .btn-green { background: #059669; color: white; }
+        .btn-amber { background: #b45309; color: white; }
+        .btn-purple { background: #6d28d9; color: white; }
 
-        /* Results modal */
+        /* modal results */
         .modal-wrap {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.72); z-index: 100;
-            align-items: flex-start; justify-content: center;
-            padding: 40px 16px; overflow-y: auto;
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 16px;
+            overflow-y: auto;
         }
         .modal-wrap.open { display: flex; }
         .modal-box {
-            background: #1e293b; border-radius: 24px; border: 1px solid #334155;
-            padding: 26px; width: 100%; max-width: 680px; animation: fadeUp 0.25s ease;
+            background: #1e293b;
+            border-radius: 32px;
+            max-width: 700px;
+            width: 100%;
+            padding: 28px;
+            border: 1px solid #475569;
         }
-        .modal-title { font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-bottom: 18px; }
-        .score-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
-        .score-box { background: #0f172a; border-radius: 14px; padding: 14px 20px; flex: 1; min-width: 90px; }
-        .score-num { font-size: 1.9rem; font-weight: 800; color: #e2e8f0; }
-        .score-lbl { font-size: 0.72rem; color: #475569; margin-top: 2px; }
-        .result-item { background: #0f172a; border-radius: 12px; padding: 11px 14px; margin-bottom: 8px; }
-        .ri-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; font-size: 0.83rem; color: #cbd5e1; margin-bottom: 4px; }
-        .ri-ans { font-size: 0.75rem; color: #475569; }
-        .results-scroll { max-height: 340px; overflow-y: auto; }
-        .modal-btns { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
-
-        @media (max-width: 480px) {
-            .set-grid { grid-template-columns: 1fr; }
-            .question-text { font-size: 0.98rem; }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .score-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        .score-box {
+            background: #0f172a;
+            border-radius: 24px;
+            padding: 14px 24px;
+            flex: 1;
+            text-align: center;
+        }
+        .score-num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f1f5f9;
+        }
+        .score-lbl {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+        .results-scroll {
+            max-height: 380px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 18px 0;
+        }
+        .result-item {
+            background: #111827;
+            border-radius: 20px;
+            padding: 12px 16px;
+        }
+        .ri-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+        .ri-ans {
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+        .modal-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        @media (max-width: 520px) {
+            .question-card { padding: 20px; }
+            .question-text { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- ══════════════════ SCREEN 1: Set Selection ══════════════════ -->
+<!-- SCREEN 1: SELECT SETS -->
 <div class="screen" id="screen1">
     <div class="sel-header">
-        <h1>📚 PD2 Exam Simulator</h1>
-        <p>Choose one or both question sets, then start the quiz</p>
+        <h1>🧠 PD Exam Pro</h1>
+        <p>✔️ Shuffle Questions & Shuffle Options · Adaptive quiz engine</p>
     </div>
-
     <div class="set-grid" id="setGrid">
-        <div class="set-card error-card"><div class="set-icon">⏳</div><div class="set-name">Loading…</div></div>
-        <div class="set-card error-card"><div class="set-icon">⏳</div><div class="set-name">Loading…</div></div>
+        <div class="set-card error-card"><div class="set-icon">⏳</div><div class="set-name">Loading sets...</div><div class="set-count">—</div></div>
     </div>
-
-    <button class="start-btn" id="startBtn" disabled>Select a set to start →</button>
-    <p class="sel-note" id="selNote">No sets selected</p>
+    <button class="start-btn" id="startBtn" disabled>⚡ Select sets to start</button>
+    <p class="sel-note" id="selNote">Pick one or more sets — questions & options will be shuffled each attempt</p>
 </div>
 
-<!-- ══════════════════ SCREEN 2: Quiz ══════════════════ -->
+<!-- SCREEN 2: QUIZ -->
 <div class="screen" id="screen2" style="display:none;">
     <div class="quiz-topbar">
-        <button class="back-btn" id="backBtn">← Sets</button>
-        <div class="quiz-title" id="quizTitle"></div>
+        <button class="back-btn" id="backBtn">← Library</button>
+        <div class="quiz-title" id="quizTitle">Ready</div>
     </div>
-
     <div class="stats-strip">
-        <span>Total <strong id="statTotal">0</strong></span>
-        <span>Answered <strong id="statAnswered">0</strong></span>
-        <span>Correct <strong id="statCorrect">0</strong></span>
+        <span>📋 Total <strong id="statTotal">0</strong></span>
+        <span>✏️ Answered <strong id="statAnswered">0</strong></span>
+        <span>✅ Correct <strong id="statCorrect">0</strong></span>
     </div>
-
     <div class="progress-bar"><div class="progress-fill" id="progressFill">0%</div></div>
     <div class="progress-meta">
-        <span id="qLabel">Q 1 / 0</span>
-        <span id="verifLabel">Not verified</span>
+        <span id="qLabel">Q1 / 0</span>
+        <span id="verifLabel">⚪ Not verified</span>
     </div>
-
     <div class="question-card">
         <div class="q-meta" id="qMeta"></div>
         <div class="question-text" id="qText"></div>
@@ -225,292 +453,378 @@
         <div class="feedback" id="feedback"></div>
         <div class="hint" id="hint"></div>
     </div>
-
     <div class="nav-row">
-        <button class="btn btn-gray"   id="prevBtn">◀ Prev</button>
-        <button class="btn btn-blue"   id="submitBtn">✓ Submit</button>
-        <button class="btn btn-green"  id="nextBtn">Next ▶</button>
-        <button class="btn btn-amber"  id="resetBtn">⟳ Reset</button>
+        <button class="btn btn-gray" id="prevBtn">◀ Prev</button>
+        <button class="btn btn-blue" id="submitBtn">✓ Submit</button>
+        <button class="btn btn-green" id="nextBtn">Next ▶</button>
+        <button class="btn btn-amber" id="resetBtn">⟳ Reset</button>
         <button class="btn btn-purple" id="resultsBtn">🏆 Results</button>
     </div>
 </div>
 
-<!-- Results modal -->
+<!-- RESULTS MODAL -->
 <div class="modal-wrap" id="modal">
     <div class="modal-box">
-        <div class="modal-title">📊 Results</div>
+        <div class="modal-title">📈 Performance summary</div>
         <div class="score-row" id="scoreRow"></div>
         <div class="results-scroll" id="resultsList"></div>
         <div class="modal-btns">
-            <button class="btn btn-gray"  id="closeModal">Close</button>
-            <button class="btn btn-amber" id="resetFromModal">⟳ Reset</button>
+            <button class="btn btn-gray" id="closeModal">Close</button>
+            <button class="btn btn-amber" id="resetFromModal">⟳ Reset Exam</button>
         </div>
     </div>
 </div>
 
 <script>
-/* ══ CONFIG ══ */
-const SETS_CONFIG = [
-    { id: "s1", label: "Set 1 – PD2 Core",       icon: "📘", file: "questions1.json" },
-    { id: "s2", label: "Set 2 – Security & API",  icon: "🔐", file: "questions2.json" },
-    { id: "s3", label: "Set 3 ",  icon: "", file: "questions3.json" }
-];
+    // ---------- CONFIGURATION ----------
+    const SETS_CONFIG = [
+        { id: "setA", label: "📖 Core Concepts", icon: "🧩", file: "questions1.json" },
+        { id: "setB", label: "🔐 Security & API", icon: "🛡️", file: "questions2.json" },
+        { id: "setC", label: "⚙️ Advanced Scenarios", icon: "🚀", file: "questions3.json" }
+    ];
 
-/* ══ STATE ══ */
-let loadedSets  = {};
-let selectedIds = new Set();
-let activeQ     = [];
-let idx         = 0;
-let selections  = {};
-let verified    = {};
-let correctness = {};
+    // global state
+    let loadedData = {};        // { setId: { label, originalQuestions } }
+    let selectedSetIds = new Set();
+    let activeQuestions = [];   // normalized & shuffled questions (order shuffled)
+    let currentIndex = 0;
+    let userSelections = {};    // index => array of selected option letters (shuffled-order indexed)
+    let verifiedStatus = {};    // index => boolean (has been submitted)
+    let correctnessMap = {};    // index => boolean (is correct)
+    
+    // shuffled options storage per question (dynamic per quiz run)
+    let shuffledOptionsMap = []; // each element: { originalLetters, shuffledLetters, mapping }
 
-/* ══ BOOT: load all JSON sets ══ */
-(async () => {
-    const results = await Promise.allSettled(
-        SETS_CONFIG.map(cfg =>
-            fetch(cfg.file).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-        )
-    );
-    const grid = document.getElementById("setGrid");
-    grid.innerHTML = "";
-    results.forEach((res, i) => {
-        const cfg = SETS_CONFIG[i];
-        const card = document.createElement("div");
-        if (res.status === "fulfilled") {
-            const qs = normalise(res.value);
-            loadedSets[cfg.id] = { label: cfg.label, questions: qs };
-            card.className = "set-card";
-            card.dataset.id = cfg.id;
-            card.innerHTML = `<div class="set-icon">${cfg.icon}</div>
-                <div class="set-name">${cfg.label}</div>
-                <div class="set-count">${qs.length} questions</div>`;
-            card.addEventListener("click", () => toggleSet(cfg.id, card));
+    // helpers
+    const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    
+    // Normalize question format
+    function normalizeQuestions(questionsArray, setIdLabel) {
+        return questionsArray.map((q, idx) => {
+            const text = (q.text || q.question || "").trim();
+            const rawOptions = q.options || {};
+            const correctAnswers = Array.isArray(q.answers) ? q.answers.map(String) : [];
+            const explanation = q.explanation || "";
+            const num = q.q_num || (idx + 1);
+            return { num, text, options: { ...rawOptions }, correctAnswers, explanation, setIdLabel };
+        }).filter(q => q.text && Object.keys(q.options).length > 0 && q.correctAnswers.length);
+    }
+
+    // fetch all JSON sets
+    (async function loadAllSets() {
+        const grid = document.getElementById("setGrid");
+        grid.innerHTML = "";
+        const promises = SETS_CONFIG.map(cfg => fetch(cfg.file).then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+        }).catch(err => ({ error: true, cfg })));
+        
+        const results = await Promise.all(promises);
+        for (let i = 0; i < results.length; i++) {
+            const res = results[i];
+            const cfg = SETS_CONFIG[i];
+            if (res && !res.error && Array.isArray(res)) {
+                const normalized = normalizeQuestions(res, cfg.label);
+                loadedData[cfg.id] = { label: cfg.label, icon: cfg.icon, originalQuestions: normalized, total: normalized.length };
+            } else {
+                loadedData[cfg.id] = { label: cfg.label, icon: cfg.icon, originalQuestions: [], total: 0, error: true };
+            }
+        }
+        renderSetSelection();
+    })();
+
+    function renderSetSelection() {
+        const grid = document.getElementById("setGrid");
+        grid.innerHTML = "";
+        for (let [id, data] of Object.entries(loadedData)) {
+            const cfg = SETS_CONFIG.find(c => c.id === id);
+            const card = document.createElement("div");
+            const isError = data.error || !data.originalQuestions.length;
+            if (isError) {
+                card.className = "set-card error-card";
+                card.innerHTML = `<div class="set-icon">⚠️</div><div class="set-name">${data.label}</div><div class="set-count">❌ load error / empty</div>`;
+                grid.appendChild(card);
+                continue;
+            }
+            card.className = `set-card ${selectedSetIds.has(id) ? "selected" : ""}`;
+            card.dataset.id = id;
+            card.innerHTML = `<div class="set-icon">${cfg.icon || "📚"}</div>
+                              <div class="set-name">${data.label}</div>
+                              <div class="set-count">${data.originalQuestions.length} questions</div>`;
+            card.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toggleSetSelection(id, card);
+            });
+            grid.appendChild(card);
+        }
+        updateStartButton();
+    }
+
+    function toggleSetSelection(id, cardElem) {
+        if (selectedSetIds.has(id)) {
+            selectedSetIds.delete(id);
+            cardElem.classList.remove("selected");
         } else {
-            card.className = "set-card error-card";
-            card.innerHTML = `<div class="set-icon">⚠️</div>
-                <div class="set-name">${cfg.label}</div>
-                <div class="set-count">Could not load file</div>`;
+            selectedSetIds.add(id);
+            cardElem.classList.add("selected");
         }
-        grid.appendChild(card);
-    });
-})();
-
-/* ══ TOGGLE SET SELECTION ══ */
-function toggleSet(id, card) {
-    selectedIds.has(id) ? (selectedIds.delete(id), card.classList.remove("selected"))
-                        : (selectedIds.add(id),    card.classList.add("selected"));
-    const n = selectedIds.size;
-    const total = countSelected();
-    const btn = document.getElementById("startBtn");
-    btn.disabled = n === 0;
-    btn.textContent = n === 0 ? "Select a set to start →"
-                    : `Start Quiz — ${total} questions →`;
-    document.getElementById("selNote").textContent =
-        n === 0 ? "No sets selected" : `${n} set${n > 1 ? "s" : ""} · ${total} questions`;
-}
-
-function countSelected() {
-    return [...selectedIds].reduce((a, id) => a + (loadedSets[id]?.questions.length || 0), 0);
-}
-
-/* ══ START QUIZ ══ */
-document.getElementById("startBtn").addEventListener("click", () => {
-    activeQ = [...selectedIds].flatMap(id =>
-        loadedSets[id].questions.map(q => ({ ...q, _setLabel: loadedSets[id].label }))
-    );
-    if (!activeQ.length) return;
-    idx = 0; selections = {}; verified = {}; correctness = {};
-    const names = [...selectedIds].map(id => loadedSets[id].label).join(" + ");
-    document.getElementById("quizTitle").innerHTML =
-        `<strong>${names}</strong> &nbsp;·&nbsp; ${activeQ.length} questions`;
-    showScreen(2);
-    render();
-});
-
-/* ══ BACK ══ */
-document.getElementById("backBtn").addEventListener("click", () => showScreen(1));
-
-function showScreen(n) {
-    document.getElementById("screen1").style.display = n === 1 ? "block" : "none";
-    document.getElementById("screen2").style.display = n === 2 ? "block" : "none";
-    document.getElementById("screen3").style.display = n === 3 ? "block" : "none";
-}
-
-/* ══ RENDER QUESTION ══ */
-function render() {
-    if (!activeQ.length) return;
-    const q     = activeQ[idx];
-    const isvfd = !!verified[idx];
-    const mysel = selections[idx] || [];
-    const total = activeQ.length;
-
-    const pct = Math.round(Object.keys(verified).length / total * 100);
-    document.getElementById("progressFill").style.width = pct + "%";
-    document.getElementById("progressFill").textContent = pct + "%";
-    document.getElementById("qLabel").textContent = `Q ${idx + 1} / ${total}`;
-
-    const vl = document.getElementById("verifLabel");
-    if (isvfd) {
-        vl.textContent = correctness[idx] ? "✅ Correct" : "❌ Incorrect";
-        vl.style.color = correctness[idx] ? "#4ade80" : "#f87171";
-    } else { vl.textContent = "Not verified"; vl.style.color = "#475569"; }
-
-    document.getElementById("qMeta").innerHTML =
-        `<span class="q-tag">Q${q.num}</span>
-         <span class="q-tag">${esc(q._setLabel)}</span>
-         ${q.answers.length > 1 ? `<span class="q-tag multi">Choose ${q.answers.length}</span>` : ""}`;
-
-    document.getElementById("qText").textContent = q.text;
-
-    const letters = Object.keys(q.options);
-    document.getElementById("optsList").innerHTML = letters.map(letter => {
-        let cls = "opt";
-        if (mysel.includes(letter)) cls += " selected";
-        if (isvfd) {
-            cls += " locked";
-            if (q.answers.includes(letter)) cls += " show-correct";
-            else if (mysel.includes(letter)) cls += " show-wrong";
-        }
-        return `<div class="${cls}" data-l="${letter}">
-            <span class="opt-letter">${letter}.</span>
-            <span class="opt-text">${esc(q.options[letter])}</span>
-        </div>`;
-    }).join("");
-
-    if (!isvfd) {
-        document.querySelectorAll(".opt").forEach(el =>
-            el.addEventListener("click", () => toggleOpt(el.dataset.l))
-        );
+        updateStartButton();
     }
 
-    const fb = document.getElementById("feedback");
-    if (isvfd) {
-        const ok = correctness[idx];
-        fb.className = "feedback " + (ok ? "correct" : "wrong");
-        const exp = q.explanation ? `<br><br>💡 ${esc(q.explanation)}` : "";
-        fb.innerHTML = `<strong>${ok ? "Correct!" : "Incorrect."}</strong>
-            &nbsp;Your: <strong>${mysel.join(", ") || "—"}</strong>
-            &nbsp;·&nbsp; Correct: <strong>${q.answers.join(", ")}</strong>${exp}`;
-        fb.style.display = "block";
-    } else {
-        fb.style.display = "none";
+    function updateStartButton() {
+        const btn = document.getElementById("startBtn");
+        const totalQ = countTotalQuestions();
+        const countSets = selectedSetIds.size;
+        btn.disabled = countSets === 0;
+        if (countSets === 0) {
+            btn.textContent = "📌 Select at least one set";
+            document.getElementById("selNote").textContent = "No sets selected — questions & options will be shuffled automatically.";
+        } else {
+            btn.textContent = `🚀 Start Quiz — ${totalQ} questions (shuffled)`;
+            document.getElementById("selNote").textContent = `${countSets} set(s) · ${totalQ} questions · order shuffled + option order shuffled per question.`;
+        }
     }
 
-    document.getElementById("hint").innerHTML = isvfd
-        ? "Verified — use Prev / Next to navigate or Reset to retry."
-        : "Select answer(s) and click <strong>Submit</strong> to check.";
+    function countTotalQuestions() {
+        let sum = 0;
+        for (let id of selectedSetIds) {
+            if (loadedData[id] && loadedData[id].originalQuestions) sum += loadedData[id].originalQuestions.length;
+        }
+        return sum;
+    }
 
-    document.getElementById("prevBtn").disabled   = idx === 0;
-    document.getElementById("nextBtn").disabled   = idx === total - 1;
-    document.getElementById("submitBtn").disabled = isvfd;
+    // ---- BUILD SHUFFLED QUIZ (questions + options shuffle) ----
+    function buildShuffledQuiz() {
+        // 1) collect all questions from selected sets
+        let rawQuestions = [];
+        for (let id of selectedSetIds) {
+            const data = loadedData[id];
+            if (data && data.originalQuestions) {
+                rawQuestions.push(...data.originalQuestions.map(q => ({ ...q, originalSetLabel: data.label })));
+            }
+        }
+        if (rawQuestions.length === 0) return [];
+        
+        // 2) SHUFFLE QUESTIONS (Fisher-Yates)
+        for (let i = rawQuestions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [rawQuestions[i], rawQuestions[j]] = [rawQuestions[j], rawQuestions[i]];
+        }
+        
+        // 3) For each question, shuffle options and store mapping
+        const shuffledQ = [];
+        shuffledOptionsMap = [];
+        for (let i = 0; i < rawQuestions.length; i++) {
+            const q = rawQuestions[i];
+            const originalLetters = Object.keys(q.options);
+            // shuffle letters
+            const shuffledLetters = [...originalLetters];
+            for (let k = shuffledLetters.length - 1; k > 0; k--) {
+                const r = Math.floor(Math.random() * (k + 1));
+                [shuffledLetters[k], shuffledLetters[r]] = [shuffledLetters[r], shuffledLetters[k]];
+            }
+            // build new options object preserving correct text
+            const shuffledOpts = {};
+            for (let letter of shuffledLetters) {
+                shuffledOpts[letter] = q.options[letter];
+            }
+            // adapt correctAnswers letters to new ordering? Wait — we need to compare answers based on content?
+            // We'll keep correctAnswers as original letter references, but for checking correctness we compare actual selected option VALUES (text mapping safe)
+            // However for display and selection we keep letters A,B,C.. but the meaning of "A" changes after shuffle? Actually we need to map user selection based on the displayed option's underlying original letter.
+            // Better: store for each shuffled option the original letter key.
+            const mapping = {};
+            for (let iSh = 0; iSh < shuffledLetters.length; iSh++) {
+                const shLetter = shuffledLetters[iSh];
+                mapping[shLetter] = shLetter;  // but letters are same, just reorder. However correctAnswers are original letters (like "A", "B"). Since we shuffle the order, the letter symbols stay same (A,B,C,D) but repositioned. So user selects A which corresponds to the content originally under A. That keeps correctness stable.
+                // actually standard approach: letters are identifiers; shuffling doesn't change correctness mapping because answer keys are "A","B"... they remain consistent.
+            }
+            // get correct answers (original letters)
+            const correctAnswerLetters = [...q.correctAnswers];
+            const newQuestion = {
+                ...q,
+                options: shuffledOpts,
+                correctAnswers: correctAnswerLetters, // same letters, but order visual changed
+                _originalOptionsOrder: originalLetters
+            };
+            shuffledQ.push(newQuestion);
+            shuffledOptionsMap.push({ shuffledOrder: shuffledLetters });
+        }
+        return shuffledQ;
+    }
 
-    updateStats();
-}
-
-/* ══ OPTION TOGGLE ══ */
-function toggleOpt(letter) {
-    if (verified[idx]) return;
-    let sel = selections[idx] ? [...selections[idx]] : [];
-    sel.includes(letter) ? (sel = sel.filter(l => l !== letter)) : sel.push(letter);
-    selections[idx] = sel;
-    render();
-}
-
-/* ══ NAV ══ */
-document.getElementById("prevBtn").addEventListener("click", () => { if (idx > 0)                    { idx--; render(); } });
-document.getElementById("nextBtn").addEventListener("click", () => { if (idx < activeQ.length - 1)  { idx++; render(); } });
-
-document.getElementById("submitBtn").addEventListener("click", () => {
-    if (verified[idx]) return;
-    const sel = selections[idx] || [];
-    if (!sel.length) { alert("Select at least one option."); return; }
-    const q = activeQ[idx];
-    correctness[idx] = JSON.stringify([...sel].sort()) === JSON.stringify([...q.answers].sort());
-    verified[idx] = true;
-    render();
-});
-
-document.getElementById("resetBtn").addEventListener("click", () => {
-    if (!confirm("Reset all answers and progress?")) return;
-    idx = 0; selections = {}; verified = {}; correctness = {};
-    updateStats(); render();
-});
-
-/* ══ STATS ══ */
-function updateStats() {
-    document.getElementById("statTotal").textContent    = activeQ.length;
-    document.getElementById("statAnswered").textContent = Object.keys(verified).length;
-    document.getElementById("statCorrect").textContent  = Object.values(correctness).filter(Boolean).length;
-}
-
-/* ══ RESULTS ══ */
-document.getElementById("resultsBtn").addEventListener("click", () => {
-    const total   = activeQ.length;
-    const correct = Object.values(correctness).filter(Boolean).length;
-    const pct     = ((correct / total) * 100).toFixed(1);
-
-    document.getElementById("scoreRow").innerHTML = `
-        <div class="score-box">
-            <div class="score-num" style="color:${pct >= 70 ? '#4ade80' : '#f87171'}">${pct}%</div>
-            <div class="score-lbl">${pct >= 70 ? "Pass" : "Keep practicing"}</div>
-        </div>
-        <div class="score-box">
-            <div class="score-num">${correct}/${total}</div>
-            <div class="score-lbl">Correct</div>
-        </div>
-        <div class="score-box">
-            <div class="score-num">${Object.keys(verified).length}</div>
-            <div class="score-lbl">Verified</div>
-        </div>`;
-
-    document.getElementById("resultsList").innerHTML = activeQ.map((q, i) => {
-        const st = verified[i]
-            ? (correctness[i]
-                ? '<span style="color:#4ade80;white-space:nowrap">✓ Correct</span>'
-                : '<span style="color:#f87171;white-space:nowrap">✗ Wrong</span>')
-            : '<span style="color:#475569;white-space:nowrap">— Skipped</span>';
-        const your = (selections[i] || []).join(", ") || "—";
-        return `<div class="result-item">
-            <div class="ri-top">
-                <span><strong>Q${q.num}</strong> ${esc(q.text.slice(0, 72))}${q.text.length > 72 ? "…" : ""}</span>
-                ${st}
-            </div>
-            <div class="ri-ans">Your: ${your} &nbsp;·&nbsp; Correct: ${q.answers.join(", ")}</div>
-            ${q.explanation ? `<div class="ri-ans" style="margin-top:4px;color:#334155">💡 ${esc(q.explanation)}</div>` : ""}
-        </div>`;
-    }).join("");
-
-    document.getElementById("modal").classList.add("open");
-});
-
-document.getElementById("closeModal").addEventListener("click", () =>
-    document.getElementById("modal").classList.remove("open"));
-
-document.getElementById("resetFromModal").addEventListener("click", () => {
-    document.getElementById("modal").classList.remove("open");
-    idx = 0; selections = {}; verified = {}; correctness = {};
-    updateStats(); render();
-});
-
-document.getElementById("modal").addEventListener("click", function(e) {
-    if (e.target === this) this.classList.remove("open");
-});
-
-/* ══ HELPERS ══ */
-function normalise(arr) {
-    return arr.map((q, i) => ({
-        num:         q.q_num ?? (i + 1),
-        text:        (q.text || q.question || "").trim(),
-        options:     q.options || {},
-        answers:     Array.isArray(q.answers) ? q.answers.map(String) : [],
-        explanation: q.explanation || ""
-    })).filter(q => q.text && Object.keys(q.options).length && q.answers.length);
-}
-
-function esc(s) {
-    return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+    // start new quiz session
+    function startQuiz() {
+        if (selectedSetIds.size === 0) return;
+        activeQuestions = buildShuffledQuiz();
+        if (!activeQuestions.length) {
+            alert("No valid questions found in selected sets.");
+            return;
+        }
+        // reset state
+        currentIndex = 0;
+        userSelections = {};
+        verifiedStatus = {};
+        correctnessMap = {};
+        
+        // update title
+        const setNames = [...selectedSetIds].map(id => loadedData[id]?.label).join(" + ");
+        document.getElementById("quizTitle").innerHTML = `<strong>${esc(setNames)}</strong> · ${activeQuestions.length} questions · 🔀 shuffled order + options`;
+        showScreen(2);
+        renderCurrentQuestion();
+    }
+    
+    function renderCurrentQuestion() {
+        if (!activeQuestions.length) return;
+        const q = activeQuestions[currentIndex];
+        const isVerified = !!verifiedStatus[currentIndex];
+        const selectedOptions = userSelections[currentIndex] || [];
+        const total = activeQuestions.length;
+        const answeredCount = Object.keys(verifiedStatus).length;
+        const correctCount = Object.values(correctnessMap).filter(v => v === true).length;
+        document.getElementById("statTotal").innerText = total;
+        document.getElementById("statAnswered").innerText = answeredCount;
+        document.getElementById("statCorrect").innerText = correctCount;
+        const percent = total ? Math.round((answeredCount / total) * 100) : 0;
+        const fillEl = document.getElementById("progressFill");
+        fillEl.style.width = percent + "%";
+        fillEl.innerText = percent + "%";
+        document.getElementById("qLabel").innerHTML = `Q ${currentIndex+1} / ${total}`;
+        const verifSpan = document.getElementById("verifLabel");
+        if (isVerified) {
+            const isCor = correctnessMap[currentIndex];
+            verifSpan.innerHTML = isCor ? "✅ Correct" : "❌ Incorrect";
+            verifSpan.style.color = isCor ? "#4ade80" : "#facc15";
+        } else {
+            verifSpan.innerHTML = "⚪ Not verified";
+            verifSpan.style.color = "#9ca3af";
+        }
+        
+        // meta tags
+        document.getElementById("qMeta").innerHTML = `
+            <span class="q-tag">#${q.num}</span>
+            <span class="q-tag">${esc(q.originalSetLabel || q.setIdLabel || "")}</span>
+            ${q.correctAnswers.length > 1 ? `<span class="q-tag multi">📌 multiple answers (${q.correctAnswers.length})</span>` : ""}
+        `;
+        document.getElementById("qText").innerHTML = esc(q.text);
+        
+        const letters = Object.keys(q.options);
+        const optsHtml = letters.map(letter => {
+            let optClass = "opt";
+            if (selectedOptions.includes(letter)) optClass += " selected";
+            if (isVerified) {
+                optClass += " locked";
+                if (q.correctAnswers.includes(letter)) optClass += " show-correct";
+                else if (selectedOptions.includes(letter)) optClass += " show-wrong";
+            }
+            return `<div class="${optClass}" data-opt-letter="${letter}">
+                        <span class="opt-letter">${letter}.</span>
+                        <span class="opt-text">${esc(q.options[letter])}</span>
+                    </div>`;
+        }).join("");
+        document.getElementById("optsList").innerHTML = optsHtml;
+        
+        // feedback
+        const fbDiv = document.getElementById("feedback");
+        if (isVerified) {
+            const isCor = correctnessMap[currentIndex];
+            fbDiv.className = `feedback ${isCor ? "correct" : "wrong"}`;
+            const yourStr = selectedOptions.length ? selectedOptions.join(", ") : "—";
+            const correctStr = q.correctAnswers.join(", ");
+            let explanationHtml = q.explanation ? `<br><br>💡 ${esc(q.explanation)}` : "";
+            fbDiv.innerHTML = `<strong>${isCor ? "✔️ Correct" : "❌ Incorrect"}</strong><br>
+                               Your choice: ${yourStr} &nbsp;|&nbsp; Correct: ${correctStr}${explanationHtml}`;
+            fbDiv.style.display = "block";
+        } else {
+            fbDiv.style.display = "none";
+        }
+        document.getElementById("hint").innerHTML = isVerified ? "Already verified. Use Next/Prev or Reset." : "Select option(s) and press Submit. Options order is shuffled each attempt.";
+        
+        // attach click handlers if not verified
+        if (!isVerified) {
+            document.querySelectorAll(".opt").forEach(optDiv => {
+                optDiv.addEventListener("click", (e) => {
+                    const letter = optDiv.dataset.optLetter;
+                    if (verifiedStatus[currentIndex]) return;
+                    let currentSel = userSelections[currentIndex] ? [...userSelections[currentIndex]] : [];
+                    if (currentSel.includes(letter)) {
+                        currentSel = currentSel.filter(l => l !== letter);
+                    } else {
+                        currentSel.push(letter);
+                    }
+                    userSelections[currentIndex] = currentSel;
+                    renderCurrentQuestion();
+                });
+            });
+        }
+        
+        // disable/enable submit
+        document.getElementById("submitBtn").disabled = isVerified;
+        document.getElementById("prevBtn").disabled = currentIndex === 0;
+        document.getElementById("nextBtn").disabled = currentIndex === total - 1;
+    }
+    
+    function submitCurrent() {
+        if (verifiedStatus[currentIndex]) return;
+        const sel = userSelections[currentIndex] || [];
+        if (sel.length === 0) {
+            alert("Please select at least one option before submitting.");
+            return;
+        }
+        const q = activeQuestions[currentIndex];
+        const sortedSel = [...sel].sort();
+        const sortedCorrect = [...q.correctAnswers].sort();
+        const isCorrect = JSON.stringify(sortedSel) === JSON.stringify(sortedCorrect);
+        correctnessMap[currentIndex] = isCorrect;
+        verifiedStatus[currentIndex] = true;
+        renderCurrentQuestion();
+    }
+    
+    function resetExam() {
+        if (!confirm("Reset all progress? Questions will be reshuffled with new order & new option shuffle.")) return;
+        startQuiz();  // reshuffle everything
+    }
+    
+    function showResultsModal() {
+        const total = activeQuestions.length;
+        const correct = Object.values(correctnessMap).filter(v => v === true).length;
+        const percent = total ? ((correct / total) * 100).toFixed(1) : 0;
+        const scoreHtml = `
+            <div class="score-box"><div class="score-num" style="color:${percent>=70?'#4ade80':'#fb923c'}">${percent}%</div><div class="score-lbl">Score</div></div>
+            <div class="score-box"><div class="score-num">${correct}/${total}</div><div class="score-lbl">Correct</div></div>
+            <div class="score-box"><div class="score-num">${Object.keys(verifiedStatus).length}</div><div class="score-lbl">Answered</div></div>
+        `;
+        document.getElementById("scoreRow").innerHTML = scoreHtml;
+        const resultsHtml = activeQuestions.map((q, idx) => {
+            const status = verifiedStatus[idx] ? (correctnessMap[idx] ? "✅ Correct" : "❌ Wrong") : "⏳ Skipped";
+            const your = (userSelections[idx] || []).join(", ") || "—";
+            return `<div class="result-item">
+                        <div class="ri-top"><span><strong>Q${q.num}</strong> ${esc(q.text.substring(0, 70))}${q.text.length>70?"…":""}</span><span>${status}</span></div>
+                        <div class="ri-ans">Your: ${your} &nbsp;✔️ Correct: ${q.correctAnswers.join(", ")}</div>
+                        ${q.explanation ? `<div class="ri-ans" style="margin-top:6px;">📘 ${esc(q.explanation.substring(0, 120))}</div>` : ""}
+                    </div>`;
+        }).join("");
+        document.getElementById("resultsList").innerHTML = resultsHtml;
+        document.getElementById("modal").classList.add("open");
+    }
+    
+    function closeModal() { document.getElementById("modal").classList.remove("open"); }
+    
+    function showScreen(screenId) {
+        document.getElementById("screen1").style.display = screenId === 1 ? "block" : "none";
+        document.getElementById("screen2").style.display = screenId === 2 ? "block" : "none";
+    }
+    
+    // event listeners
+    document.getElementById("startBtn").addEventListener("click", startQuiz);
+    document.getElementById("backBtn").addEventListener("click", () => showScreen(1));
+    document.getElementById("prevBtn").addEventListener("click", () => { if (currentIndex > 0) { currentIndex--; renderCurrentQuestion(); } });
+    document.getElementById("nextBtn").addEventListener("click", () => { if (currentIndex < activeQuestions.length-1) { currentIndex++; renderCurrentQuestion(); } });
+    document.getElementById("submitBtn").addEventListener("click", submitCurrent);
+    document.getElementById("resetBtn").addEventListener("click", resetExam);
+    document.getElementById("resultsBtn").addEventListener("click", showResultsModal);
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    document.getElementById("resetFromModal").addEventListener("click", () => { closeModal(); resetExam(); });
+    document.getElementById("modal").addEventListener("click", (e) => { if(e.target === document.getElementById("modal")) closeModal(); });
 </script>
 </body>
 </html>

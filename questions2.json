@@ -169,7 +169,7 @@
       "D": "Use the WITH SECURITY_ENFORCED clause within the SOQL."
     },
     "answers": [
-      "D"
+      "A"
     ]
   },
   {
@@ -418,7 +418,7 @@
       "D": "Total heap size"
     },
     "answers": [
-      "B"
+      "C"
     ]
   },
   {
@@ -563,7 +563,7 @@
     },
     "answers": [
       "B",
-      "D"
+      "C"
     ]
   },
   {
@@ -577,7 +577,7 @@
     },
     "answers": [
       "B",
-      "C"
+      "D"
     ]
   },
   {

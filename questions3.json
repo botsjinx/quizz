@@ -52,7 +52,7 @@
       "C": "Paused Flow Interviews component",
       "D": "Developer Console"
     },
-    "answers": ["A", "B"]
+    "answers": ["A", "D"]
   },
   {
     "q_num": 6,
@@ -63,7 +63,7 @@
       "C": "Email messages",
       "D": "Criteria-based sharing calculations"
     },
-    "answers": ["A", "D"]
+    "answers": ["A", "B"]
   },
   {
     "q_num": 7,
@@ -85,7 +85,7 @@
       "C": "The Apex governor limits are omitted while calling the constructor of the Apex class.",
       "D": "The Apex governor limits are reset for each iteration of the execute() method."
     },
-    "answers": ["B", "D"]
+    "answers": ["A", "D"]
   },
   {
     "q_num": 9,
@@ -107,7 +107,7 @@
       "C": "Use a third-party tool to encrypt the sensitive data before importing it into Salesforce.",
       "D": "Use the Data Import Wizard to import the data and set up field-level security to restrict access to sensitive fields."
     },
-    "answers": ["B"]
+    "answers": ["D"]
   },
   {
     "q_num": 11,
@@ -221,7 +221,7 @@
       "D": "Metadata API",
       "E": "Setup Menu"
     },
-    "answers": ["B", "D", "E"]
+    "answers": ["B", "C", "E"]
   },
   {
     "q_num": 21,
@@ -387,7 +387,7 @@
       "C": "Read/Write access on the secondary relationship",
       "D": "Read/Write access on the junction object"
     },
-    "answers": ["A", "B"]
+    "answers": ["C", "B"]
   },
   {
     "q_num": 36,
@@ -552,7 +552,7 @@
       "C": "The parent component can invoke a public method in the child component.",
       "D": "The parent component can use a public property to pass the data to the child component."
     },
-    "answers": ["B", "D"]
+    "answers": ["C", "D"]
   },
   {
     "q_num": 51,
@@ -619,7 +619,7 @@
       "C": "Execute anonymous Apex as a different user.",
       "D": "Load data from a remote site with a callout."
     },
-    "answers": ["C"]
+    "answers": ["B"]
   },
   {
     "q_num": 57,

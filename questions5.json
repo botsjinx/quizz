@@ -19,7 +19,7 @@
       "C": "Auto-launched flow on Task",
       "D": "Record-triggered flow on Opportunity"
     },
-    "answers": ["B"]
+    "answers": ["D"]
   },
   {
     "q_num": 3,
@@ -261,7 +261,7 @@
       "C": "Easy integration with third-party libraries",
       "D": "Better performance due to client-side rendering"
     },
-    "answers": ["C"]
+    "answers": ["D"]
   },
   {
     "q_num": 25,
@@ -394,7 +394,7 @@
       "C": "Add @IsTest above line 03.",
       "D": "Change public to private on line 01."
     },
-    "answers": ["C"]
+    "answers": ["A"]
   },
   {
     "q_num": 37,
@@ -556,7 +556,7 @@
       "C": "trigger RequestTrigger on Request__c (before insert) {\n    RequestLogic.validateRecords(trigger.new);\n}",
       "D": "trigger RequestTrigger on Request__c (after insert) {\n    RequestLogic.validateRecords(trigger.new);\n}"
     },
-    "answers": ["D"]
+    "answers": ["C"]
   },
   {
     "q_num": 52,
@@ -567,7 +567,7 @@
       "C": "Use the WITH SECURITY_ENFORCED clause within the SOQL.",
       "D": "Use the without sharing keyword."
     },
-    "answers": ["C"]
+    "answers": ["B"]
   },
   {
     "q_num": 53,

@@ -63,7 +63,7 @@
       "C": "Data may be passed in the payload of a custom event using @wire decorated properties.",
       "D": "By default a custom event only propagates to it's immediate container."
     },
-    "answers": ["A", "B"]
+    "answers": ["A", "D"]
   },
   {
     "q_num": 7,
@@ -173,7 +173,7 @@
       "C": "Renaming or replacing a picklist entry",
       "D": "Updates to FeedItem"
     },
-    "answers": ["B", "C"]
+    "answers": ["D", "A"]
   },
   {
     "q_num": 17,
@@ -504,7 +504,7 @@
       "C": "View the code coverage percentage for the class using the Overall Code Coverage panel in the Developer Console Tests tab.",
       "D": "View the Class Test Percentage tab on the Apex Class list view in Salesforce Setup."
     },
-    "answers": ["A"]
+    "answers": ["C"]
   },
   {
     "q_num": 47,
@@ -515,7 +515,7 @@
       "C": "Compatibility with all web browsers",
       "D": "Better performance due to client-side rendering"
     },
-    "answers": ["B"]
+    "answers": ["D"]
   },
   {
     "q_num": 48,

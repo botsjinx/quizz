@@ -8,7 +8,7 @@
       "C": "Use the Test.loadTest() method.",
       "D": "Use the @IsTest(SeeAllData=true) annotation."
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "D"
     ],
@@ -23,7 +23,7 @@
       "C": "The record will not be created and an exception will be thrown.",
       "D": "The record will not be created and no error will be reported."
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -37,7 +37,7 @@
       "C": "Scratch orgs",
       "D": "Full Copy sandboxes"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -51,7 +51,7 @@
       "C": "In a test setup method, test data is inserted once and made available for all test methods in the test class.",
       "D": "The @testSetup annotation is not supported when the @isTest(SeeAllData=True) annotation is used."
     },
-    "correct_answers": [
+    "answers": [
       "B",
       "D"
     ],
@@ -66,7 +66,7 @@
       "C": "Build a flow with Flow Builder.",
       "D": "Build an account assignment rule."
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -79,7 +79,7 @@
       "B": "Add a LIMIT clause to the SOQL query on line 16 to limit the number of Assets queried for an Account.",
       "C": "Move all of the logic to a Queueable class that queries for and updates the Assets and call it from the trigger."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -93,7 +93,7 @@
       "C": "Decrease the batch size to reduce the load on the system.",
       "D": "Disable the batch job and recreate it with a smaller number of records."
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -107,7 +107,7 @@
       "C": "Bulk API can be used to import large data volumes in development environments without bypassing the storage limits.",
       "D": "Data import wizard is an application that is installed on your computer."
     },
-    "correct_answers": [
+    "answers": [
       "B",
       "D"
     ],
@@ -122,7 +122,7 @@
       "C": "Some of the Vendor records have null for the Account field.",
       "D": "The Account object does not allow changing a field type for a custom field."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -136,7 +136,7 @@
       "C": "A for loop, with a switch statement inside",
       "D": "A for loop, with an if or if/else statement inside"
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -150,7 +150,7 @@
       "C": "Developer Console",
       "D": "VS Code"
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -164,7 +164,7 @@
       "C": "All methods in the test classes must use @isTest.",
       "D": "Apex classes must have at least 75% code coverage org-wide."
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "D"
     ],
@@ -179,7 +179,7 @@
       "C": "Customized JavaScript buttons",
       "D": "Salesforce Classic user interface pages"
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -193,7 +193,7 @@
       "C": "Embed the Lightning Web Component is a Visualforce Component and add directly to the page layout.",
       "D": "Use the Lightning Out JavaScript library to embed the Lightning Web Component in a Visualforce page and add to the page layout."
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -207,7 +207,7 @@
       "C": "An External ID field can be used to reference an ID from another external system.",
       "D": "An External ID is indexed and can improve the performance of SOQL queries."
     },
-    "correct_answers": [
+    "answers": [
       "C",
       "D"
     ],
@@ -222,7 +222,7 @@
       "C": "Include a try/catch block to the Apex class.",
       "D": "Run the code in an Execute Anonymous block in the Developer Console."
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -235,7 +235,7 @@
       "B": "Remove null items from the list of Accounts.",
       "C": "Implement a try/catch block for the DML."
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -249,7 +249,7 @@
       "C": "Lightning component",
       "D": "Lightning page"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -263,7 +263,7 @@
       "C": "bubbles: false, composed: false",
       "D": "bubbles: true, composed: true"
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -277,7 +277,7 @@
       "C": "100",
       "D": "150"
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -292,7 +292,7 @@
       "D": "Controller",
       "E": "Renderer"
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "D",
       "E"
@@ -308,7 +308,7 @@
       "C": "Mark fields as read-only on the page layout.",
       "D": "Use Flow Builder."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -322,7 +322,7 @@
       "C": "List <sObject> searchList = [FIND '*ACME*' IN ALL FIELDS RETURNING Contact, Lead];",
       "D": "List<List <sObject>> searchList = [SELECT Name, ID FROM Contact, Lead WHERE Name like '%ACME%'];"
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -336,7 +336,7 @@
       "C": "By providing device-awareness for mobile and desktops",
       "D": "By providing change history and version control"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -351,7 +351,7 @@
       "D": "Apex Class",
       "E": "Flow"
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C",
       "D"
@@ -367,7 +367,7 @@
       "C": "@Interface(class=\"Laptop\")\npublic class SilverLaptop",
       "D": "public class SilverLaptop implements Laptop"
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -381,7 +381,7 @@
       "C": "4",
       "D": "3"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -395,7 +395,7 @@
       "C": "Trigger",
       "D": "Future method"
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "B"
     ],
@@ -410,7 +410,7 @@
       "C": "Decorate the server-side method with @AuraEnabled(cacheable=true).",
       "D": "Call the setStorable() method on the action in the JavaScript client-side code."
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -424,7 +424,7 @@
       "C": "Use a validation rule on the Case object.",
       "D": "Use an Assignment Flow element."
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -438,7 +438,7 @@
       "C": "Create a mock using the Stub API.",
       "D": "Use @TestSetup with a void method."
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -452,7 +452,7 @@
       "C": "SELECT Id, (SELECT Id FROM Job_Applications__r) FROM Contact WHERE Account.Industry = 'Technology';",
       "D": "SELECT Id, (SELECT Id FROM Job_Application__c) FROM Contact WHERE Account.Industry = 'Technology';"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -466,7 +466,7 @@
       "C": "Account.isDeletable()",
       "D": "accountRec.sObjectType.isDeletable()"
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -481,7 +481,7 @@
       "D": "A method using the @InvocableMethod annotation can have multiple input parameters.",
       "E": "A method using the @InvocableMethod annotation can be declared as Public or Global."
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C",
       "E"
@@ -497,7 +497,7 @@
       "C": "Production",
       "D": "Dev Hub"
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -511,7 +511,7 @@
       "C": "Use a LATEST formula on each of the latest availability date fields.",
       "D": "Use a DAYS formula on each of the availability date fields and a COUNT Roll-Up Summary field on the Order."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -525,7 +525,7 @@
       "C": "Reuse the event logic in a component bundle, by putting the logic in the helper.",
       "D": "Try to use application events as opposed to component events."
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C"
     ],
@@ -540,7 +540,7 @@
       "C": "SFDX CLI",
       "D": "Change Sets"
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C"
     ],
@@ -555,7 +555,7 @@
       "C": "A Visualforce page in Salesforce Classic and a Lightning component in Lightning Experience",
       "D": "A Lightning component in Salesforce Classic and a Lightning component in Lightning Experience"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -569,7 +569,7 @@
       "C": "Use the Streaming API to create real-time roll-up summaries.",
       "D": "Use the Metadata API to create real-time roll-up summaries."
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -583,7 +583,7 @@
       "C": "Declarative development can be done using the Setup menu.",
       "D": "Declarative development does not require Apex test classes."
     },
-    "correct_answers": [
+    "answers": [
       "C",
       "D"
     ],
@@ -598,7 +598,7 @@
       "C": "Upload the CSV into a custom object related to Candidate__c.",
       "D": "Create a before insert trigger to correctly map the records."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -612,7 +612,7 @@
       "C": "Write a class that implements WebServiceMock.",
       "D": "Write a class that extends HTTPCalloutMock."
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -626,7 +626,7 @@
       "C": "Unlimited processing power and memory",
       "D": "Preconfigured storage for big data"
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -640,7 +640,7 @@
       "C": "Apex trigger",
       "D": "Formula field"
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -653,7 +653,7 @@
       "B": "public class CheckPaymentProcessor implements PaymentProcessor {\n    public void pay(Decimal amount) {\n        // functional code here\n    }\n}",
       "C": "public class CheckPaymentProcessor implements PaymentProcessor {\n    public void pay(Decimal amount);\n}"
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -667,7 +667,7 @@
       "C": "Rollup summary fields can cause the parent record to go through Save.",
       "D": "The validation rules will cause the trigger to fire again."
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C"
     ],
@@ -682,7 +682,7 @@
       "C": "@InvocableMethod\nglobal static List<List<Recommendation>> getLevel(List<ContactWrapper> input)\n{ /*implementation*/ }",
       "D": "@InvocableMethod\nglobal Recommendation getLevel(ContactWrapper input)\n{ /*implementation*/ }"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -696,7 +696,7 @@
       "C": "<lightning-input type=\"number\" value=\"Salary__c\" formatter=\"currency\">\n</lightning-input>",
       "D": "<lightning-input-field field-name=\"Salary__c\">\n</lightning-input-field>"
     },
-    "correct_answers": [
+    "answers": [
       "D"
     ],
     "verified": true
@@ -710,7 +710,7 @@
       "C": "public class CustomerOrder extends OrderRequest",
       "D": "@Implements(class=\"OrderRequest\")\npublic class CustomerOrder"
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -724,7 +724,7 @@
       "C": "1",
       "D": "4"
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -739,7 +739,7 @@
       "D": "$Lightning.createComponent",
       "E": "<apex:slds/>"
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C",
       "D"
@@ -755,7 +755,7 @@
       "C": "Apex class",
       "D": "XML file"
     },
-    "correct_answers": [
+    "answers": [
       "A",
       "C"
     ],
@@ -770,7 +770,7 @@
       "C": "Select the Allow reparenting option on the master-detail relationship.",
       "D": "Create a junction object between OrderItem and Order."
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -784,7 +784,7 @@
       "C": "Add a new Create Records element.",
       "D": "Add a new Get Records element."
     },
-    "correct_answers": [
+    "answers": [
       "C"
     ],
     "verified": true
@@ -798,7 +798,7 @@
       "C": "Data Loader automatically relates Opportunities to Accounts.",
       "D": "Data Import Wizard can not import all 500 records."
     },
-    "correct_answers": [
+    "answers": [
       "B"
     ],
     "verified": true
@@ -812,7 +812,7 @@
       "C": "The isAccessible() method must be used for field-level access checks.",
       "D": "Lightning Data Service ignores field-level security."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -826,7 +826,7 @@
       "C": "200 Accounts are inserted.",
       "D": "1 Account is inserted."
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -840,7 +840,7 @@
       "C": "Sandbox refresh",
       "D": "Developer Console"
     },
-    "correct_answers": [
+    "answers": [
       "A"
     ],
     "verified": true
@@ -855,7 +855,7 @@
       "D": "List",
       "E": "sObject"
     },
-    "correct_answers": [
+    "answers": [
       "C",
       "D",
       "E"
